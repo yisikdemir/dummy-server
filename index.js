@@ -74,6 +74,56 @@ app.post('/bullet-test', (req, res) => {
   }, duration * 1000); // Convert duration to milliseconds
 });
 
+// Define a route handler for the '/analizor-status' URL using POST method
+app.post('/analizor-status', (req, res) => {
+  // Extract data from the request body
+  const { date, action, msg } = req.body;
+
+  // Check if all required fields are present
+  if (!date || !action || !msg) {
+    return res.status(400).json({
+      error: 'Missing required fields: date, action, and msg'
+    });
+  }
+
+  // Validate date format (ISO 8601)
+  const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+  if (!iso8601Regex.test(date)) {
+    return res.status(400).json({
+      error: 'Date must be in ISO 8601 format'
+    });
+  }
+
+  // Convert action to integer
+  const actionInt = parseInt(action, 10);
+
+  // Check if action is valid (1, 2, or 3)
+  if (![1, 2, 3].includes(actionInt)) {
+    return res.status(400).json({
+      error: 'Action must be 1, 2, or 3'
+    });
+  }
+
+  // Define status based on action
+  let status;
+  if (actionInt === 1) {
+    status = 'reset atildi';
+  } else if (actionInt === 2) {
+    status = 'kapatildi';
+  } else {
+    status = 'analizor is calisiyor';
+  }
+
+  // Delay response by 3 seconds
+  setTimeout(() => {
+    // Return the response as a JSON object after the delay
+    res.json({
+      date,
+      status
+    });
+  }, 3000); // 3 seconds delay
+});
+
 // Start the server and listen on the specified port
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
