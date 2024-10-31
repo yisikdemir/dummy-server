@@ -20,6 +20,9 @@ app.post('/bullet-test-start', (req, res) => {
         return res.status(400).json({ detail: 'dateTime and testId are required.' });
     }
 
+    // Randomly select genelTestSonucu as 0, 1, or 2
+    const genelTestSonucu = Math.floor(Math.random() * 3); // Generates 0, 1, or 2
+
     // Simulate test duration
     setTimeout(() => {
         console.log('>> Test bitti');
@@ -28,7 +31,7 @@ app.post('/bullet-test-start', (req, res) => {
             dateTime: dateTime,
             teuStokNo: teuStokNo,
             testSonuclari: "['Kaldi', 'Kaldi', 'Kaldi', 'Kaldi']",
-            genelTestSonucu: "1",
+            genelTestSonucu: genelTestSonucu.toString(),
             hataMesajı: "-"
         });
     }, 5000); // Simulates a delay of 5 seconds
