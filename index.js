@@ -20,8 +20,15 @@ app.post('/bullet-test-start', (req, res) => {
         return res.status(400).json({ detail: 'dateTime and testId are required.' });
     }
 
-    // Randomly select genelTestSonucu as 0, 1, or 2
-    const genelTestSonucu = Math.floor(Math.random() * 3); // Generates 0, 1, or 2
+    // Randomly select genelTestSonucu as 0, 1, or 2 with 75% chance of being 1
+    let genelTestSonucu;
+    const randomValue = Math.random();
+
+    if (randomValue < 0.75) {
+        genelTestSonucu = 1; // 75% chance to be 1
+    } else {
+        genelTestSonucu = Math.floor(Math.random() * 2) * 2; // 25% chance to be 0 or 2
+    }
 
     // Simulate test duration
     setTimeout(() => {
